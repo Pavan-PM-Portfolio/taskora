@@ -3153,11 +3153,18 @@ body.view-board .scroll{padding-bottom:0}
 @media (max-width:720px){ .mem-acts{width:100%;padding-left:46px} .mem-search{min-width:0;width:100%} }
 
 /* ---- guest preview ---- */
-.guest-bar{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:8px 16px;background:var(--brand-ink,#0C0F18);color:#fff;font:500 12.5px Inter,system-ui,sans-serif;flex:none}
-.guest-bar[hidden]{display:none}
-.guest-bar b{font-weight:650}
-.guest-bar button{height:28px;border:1px solid rgba(255,255,255,.28);background:transparent;color:#fff;border-radius:6px !important;padding:0 11px;font:600 12px Inter,system-ui,sans-serif;cursor:pointer}
-.guest-bar button.primary{background:#fff;color:var(--brand-ink,#0C0F18);border-color:#fff}
+.bb-guest{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:8px;height:36px;padding:0 5px 0 12px;background:var(--accent-soft);border:1px solid var(--brand-mist-line,#FFD3CC);border-radius:18px !important;font:500 12.5px Inter,system-ui,sans-serif;color:var(--ink-2);white-space:nowrap}
+.bb-guest[hidden]{display:none}
+.bb-guest-dot{width:8px;height:8px;border-radius:50% !important;background:var(--brand-gradient,linear-gradient(135deg,#FE5459,#FEA66C));flex:none}
+.bb-guest-t{display:flex;align-items:baseline;gap:8px}
+.bb-guest-t b{font-weight:650;color:var(--ink)}
+.bb-guest-sub{color:var(--muted)}
+.bb-guest button{height:26px;border:0;background:none;color:var(--ink-2);border-radius:13px !important;padding:0 10px;font:600 12px Inter,system-ui,sans-serif;cursor:pointer}
+.bb-guest button:hover{background:rgba(12,15,24,.06);color:var(--ink)}
+.bb-guest button.primary{background:var(--brand-ink,#0C0F18);color:#fff}
+.bb-guest button.primary:hover{background:var(--brand-ink-hover,#262A36);color:#fff}
+@media (max-width:980px){ .bb-guest-sub{display:none} }
+@media (max-width:720px){ .bb-guest #guestReset{display:none} .bb-guest{top:auto;bottom:calc(100% + 8px);transform:translateX(-50%);padding-left:10px;box-shadow:0 6px 18px -8px rgba(12,15,24,.25)} }
 .auth-or{display:flex;align-items:center;gap:10px;margin:18px 0 14px;color:var(--faint);font-size:12px}
 .auth-or::before,.auth-or::after{content:"";flex:1;height:1px;background:var(--line)}
 .auth-guest{width:100%;height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px !important;font:600 14px Inter,system-ui,sans-serif;cursor:pointer}
@@ -3167,11 +3174,6 @@ body.view-board .scroll{padding-bottom:0}
 </head>
 <body>
 <div class="appwrap">
-  <div id="guestBar" class="guest-bar" role="status" hidden>
-    <span><b>Guest preview.</b> You’re looking at sample data. Changes stay in this tab and disappear when you refresh.</span>
-    <button type="button" id="guestReset" onclick="leaveGuest()">Start over</button>
-    <button type="button" id="guestSignIn" class="primary" onclick="leaveGuest()">Sign in</button>
-  </div>
   <div id="envBanner" class="env-banner-host"></div>
   <nav class="tsknav">
     <a class="tb-brand" href="./" aria-label="Taskora home"><img class="tsk-logo" src="assets/taskora-logo.png" alt="Taskora"></a>
@@ -3369,6 +3371,12 @@ body.view-board .scroll{padding-bottom:0}
     <div class="bb-sep"></div>
     <button class="bb-nav" data-bb="board"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="11" rx="1"/></svg><span>Board</span></button>
     <button class="bb-nav" data-bb="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 3l9 9M5 10v10h5v-6h4v6h5V10"/></svg><span>My Work</span></button>
+  </div>
+  <div class="bb-guest" id="guestBar" role="status" hidden title="You’re looking at sample data. Changes stay in this tab and disappear when you refresh.">
+    <span class="bb-guest-dot" aria-hidden="true"></span>
+    <span class="bb-guest-t"><b>Guest preview</b><span class="bb-guest-sub">Changes aren’t saved</span></span>
+    <button type="button" id="guestReset" onclick="leaveGuest()">Start over</button>
+    <button type="button" id="guestSignIn" class="primary" onclick="leaveGuest()">Sign in</button>
   </div>
   <div class="bb-right">
     <button class="bb-ic" data-bb="notif" title="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bb-badge" id="botNotifBadge" style="display:none"></span></button>
