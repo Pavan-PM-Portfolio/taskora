@@ -1,0 +1,17 @@
+# local config — every deployment has its own
+# web/config.js (demo build)
+scripts/deploy.env
+
+# never commit keys or dumps
+*.pem
+.env
+.env.*
+backups/
+
+# build + tooling
+dist/
+supabase/.temp/
+supabase/.branches/
+node_modules/
+.DS_Store
+**/.DS_Store
