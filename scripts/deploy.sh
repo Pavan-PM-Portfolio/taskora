@@ -52,25 +52,25 @@ SUPABASE=(npx -y supabase@latest)
 FAIL=0
 say "Pre-flight"
 
-[[ -f web/index.html ]] || die "web/index.html not found — run this from the Taskora repo."
+[[ -f app.html && -f index.html ]] || die "app.html / index.html not found — run this from the Taskora repo."
 
 # 1. config.js exists and holds a browser-safe key
 URL=""; KEY=""
-if [[ -f web/config.js ]]; then
-  URL="$(sed -n 's/.*supabaseUrl:[[:space:]]*"\([^"]*\)".*/\1/p' web/config.js | sed -n 1p)"
-  KEY="$(sed -n 's/.*supabaseKey:[[:space:]]*"\([^"]*\)".*/\1/p' web/config.js | sed -n 1p)"
+if [[ -f config.js ]]; then
+  URL="$(sed -n 's/.*supabaseUrl:[[:space:]]*"\([^"]*\)".*/\1/p' config.js | sed -n 1p)"
+  KEY="$(sed -n 's/.*supabaseKey:[[:space:]]*"\([^"]*\)".*/\1/p' config.js | sed -n 1p)"
   if [[ -z "$URL" || -z "$KEY" ]]; then
-    bad "web/config.js has an empty supabaseUrl or supabaseKey (the app would run as the offline demo)"
+    warn "config.js has no Supabase keys yet — guest sign-in works, email sign-in is off"
   elif [[ "$KEY" == sb_secret_* ]]; then
-    bad "web/config.js holds a SECRET key. Use the publishable key (sb_publishable_…)."
+    bad "config.js holds a SECRET key. Use the publishable key (sb_publishable_…)."
   elif [[ "$KEY" == eyJ* ]] && command -v node >/dev/null 2>&1 &&
        [[ "$(node -e 'try{const p=JSON.parse(Buffer.from(process.argv[1].split(".")[1],"base64url"));console.log(p.role||"")}catch(e){}' "$KEY")" == "service_role" ]]; then
-    bad "web/config.js holds the service_role key. Use the anon / publishable key."
+    bad "config.js holds the service_role key. Use the anon / publishable key."
   else
-    ok "web/config.js points at $URL"
+    ok "config.js points at $URL"
   fi
 else
-  bad "web/config.js is missing — copy web/config.example.js and fill it in"
+  bad "config.js is missing — copy config.example.js to config.js"
 fi
 
 # 2. project ref matches the URL
@@ -85,7 +85,7 @@ elif [[ "$MODE" == db || "$MODE" == functions || "$MODE" == all ]]; then
 fi
 
 # 3. Windows line endings break shell scripts and are a sign of a bad paste
-crlf="$(grep -rlI $'\r' web scripts supabase --include='*.html' --include='*.js' --include='*.ts' \
+crlf="$(grep -rlI $'\r' index.html app.html config.js js css scripts supabase --include='*.html' --include='*.js' --include='*.css' --include='*.ts' \
         --include='*.sql' --include='*.sh' --include='*.toml' 2>/dev/null || true)"
 if [[ -n "$crlf" ]]; then
   bad "Windows line endings in:"; echo "$crlf" | sed 's/^/          /'
@@ -96,18 +96,17 @@ else ok "line endings"; fi
 if command -v node >/dev/null 2>&1; then
   if node -e '
     const fs=require("fs"), vm=require("vm");
-    const html=fs.readFileSync("web/index.html","utf8");
-    const blocks=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);
-    if(!blocks.length) throw new Error("no inline script found");
-    blocks.forEach((code,i)=>new vm.Script(code,{filename:"index.html#script"+i}));
-    if(fs.existsSync("web/config.js")) new vm.Script(fs.readFileSync("web/config.js","utf8"),{filename:"config.js"});
-  ' 2>/tmp/taskora-js.err; then ok "javascript parses"
+    const files=["config.js"].concat(fs.readdirSync("js").filter(f=>f.endsWith(".js")).map(f=>"js/"+f));
+    files.forEach(f=>{ if(fs.existsSync(f)) new vm.Script(fs.readFileSync(f,"utf8"),{filename:f}); });
+    const app=fs.readFileSync("app.html","utf8");
+    [...app.matchAll(/<script src="(js\/[^"?]+)/g)].forEach(m=>{ if(!fs.existsSync(m[1])) throw new Error("app.html loads a missing file: "+m[1]); });
+  ' 2>/tmp/taskora-js.err; then ok "javascript parses and every script app.html loads exists"
   else bad "javascript syntax error:"; sed 's/^/          /' /tmp/taskora-js.err | head -8; fi
 else warn "node not found — skipped the JavaScript syntax check"; fi
 
 # 5. nothing secret is tracked by git
 if command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-  leak="$(git ls-files | grep -E '(^|/)(deploy\.env|\.env(\..*)?|[^/]*\.pem)$|^web/config\.js$|^backups/' || true)"
+  leak="$(git ls-files | grep -E '(^|/)(deploy\.env|\.env(\..*)?|[^/]*\.pem)$|^backups/' || true)"
   if [[ -n "$leak" ]]; then bad "these must not be committed:"; echo "$leak" | sed 's/^/          /'
   else ok "no secrets tracked by git"; fi
   if git grep -nIE 'sb_secret_[A-Za-z0-9_-]{10,}|service_role"?[[:space:]]*[:=][[:space:]]*"eyJ' -- . ':!scripts/deploy.sh' >/tmp/taskora-grep.txt 2>/dev/null; then
@@ -129,7 +128,7 @@ if [[ -n "$URL" && -n "$KEY" ]] && command -v curl >/dev/null 2>&1; then
 fi
 
 # 7. required files
-for f in supabase/migrations supabase/functions/admin-users/index.ts web/assets/taskora-logo.png; do
+for f in supabase/migrations supabase/functions/admin-users/index.ts assets/taskora-logo.png js css; do
   [[ -e "$f" ]] || bad "missing $f"
 done
 [[ $FAIL -eq 0 ]] && ok "required files present"
@@ -178,8 +177,8 @@ deploy_functions() {
 build_web() {
   DIST="$ROOT/dist"
   rm -rf "$DIST"; mkdir -p "$DIST"
-  cp web/index.html web/config.js "$DIST"/
-  cp -R web/assets "$DIST"/assets
+  cp index.html app.html config.js "$DIST"/
+  cp -R assets css js "$DIST"/
   echo "  built dist/ ($(find "$DIST" -type f | wc -l | tr -d ' ') files)"
 }
 

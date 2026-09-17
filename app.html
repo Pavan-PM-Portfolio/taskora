@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="light"/>
+<title>Taskora</title>
+<meta name="description" content="Taskora — boards, epics, QA and time tracking for delivery teams."/>
+<meta name="theme-color" content="#0C0F18"/>
+<link rel="icon" type="image/png" href="assets/favicon.png"/>
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=202609171427"/>
+<link rel="stylesheet" href="css/taskora.css?v=202609171427"/>
+<link rel="stylesheet" href="css/sprints.css?v=202609171427"/>
+<link rel="stylesheet" href="css/boards.css?v=202609171427"/>
+</head>
+<body>
+<div class="appwrap">
+  <div id="envBanner" class="env-banner-host"></div>
+  <nav class="tsknav">
+    <a class="tb-brand" href="./" aria-label="Taskora home"><img class="tsk-logo" src="assets/taskora-logo.png" alt="Taskora"></a>
+    <span style="flex:1"></span>
+    <div class="notif-wrap">
+      <button class="tb-bell" id="notifBell" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span class="tb-bell-badge" id="notifBadge" style="display:none">0</span>
+      </button>
+    </div>
+    <div class="acct-wrap">
+      <button class="tb-acct" id="pkAvatar" title="Account">
+        <span class="tb-glyph" id="acctAv"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8.2" r="3.9"/><path d="M12 13.4c-4.1 0-7.4 2.6-7.4 5.9 0 .4.3.7.7.7h13.4c.4 0 .7-.3.7-.7 0-3.3-3.3-5.9-7.4-5.9Z"/></svg></span>
+        <span class="tn-acct-txt"><span class="who" id="acctName">Account</span><span class="role" id="acctRole">Signed in</span></span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="acct-menu ap-panel" id="acctMenu">
+        <div class="ap-head">
+          <span class="ap-av" id="apAv"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8.2" r="3.9"/><path d="M12 13.4c-4.1 0-7.4 2.6-7.4 5.9 0 .4.3.7.7.7h13.4c.4 0 .7-.3.7-.7 0-3.3-3.3-5.9-7.4-5.9Z"/></svg></span>
+          <div class="ap-id"><div class="nm" id="apName">Account</div><div class="em" id="apEmail">Signed in</div><span class="ap-role" id="apRole">Member</span></div>
+        </div>
+        <div class="ap-card">
+          <div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></div>
+          <div class="t"><div class="a">Taskora</div><div class="b">Workspace settings</div></div>
+          <button class="ap-go" id="apSettings">Settings</button>
+        </div>
+        <div class="ap-sec">
+          <div class="ap-sec-h">Quick links</div>
+          <div class="ap-links">
+            <button class="ap-link" id="apAccount"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Account settings</button>
+            <button class="ap-link" id="apAdmin"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>Members</button>
+            <button class="ap-link" id="apHelp"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Help &amp; docs</a>
+          </div>
+        </div>
+        <div class="ap-foot">
+          <a class="ap-fbtn" href="#" id="apMyAccount"><svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>My Account</a>
+          <button class="ap-fbtn out" id="signOutBtn"><svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="nd-scrim" id="notifScrim">
+    <aside class="ndrawer" id="notifDrawer">
+      <div class="nd-top"><div class="l"><h2>Notifications</h2><span class="nd-cpill" id="ndCount" style="display:none">0 new</span></div>
+        <button class="nd-x" id="notifClose"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+      <div class="nd-sub"><div class="nd-tabs" id="ndTabs"><button class="on" data-tab="all">All <span class="cnt" id="ndcAll">0</span></button><button data-tab="unread">Unread <span class="cnt" id="ndcUnread">0</span></button><button data-tab="mentions">Mentions <span class="cnt" id="ndcMentions">0</span></button></div><button class="nd-mk" id="ndMarkAll">Mark all read</button></div>
+      <div class="nd-body" id="ndBody"></div>
+      <div class="nd-foot"><button class="set" id="ndSettings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>Notification settings</button><button class="clr" id="ndClear">Clear all</button></div>
+    </aside>
+  </div>
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="side-head">
+      <button class="sp-switch" id="spSwitch" title="Switch workspace">
+        
+        <span class="sp-switch-ic"><img class="sp-mark-img" src="assets/taskora-mark.png" alt=""></span>
+        <span class="ws-meta"><span class="ws-name" id="wsName">Workspace</span></span>
+        
+      </button>
+      <button class="nav-toggle" id="navToggle" title="Collapse sidebar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg></button>
+    </div>
+
+    <nav class="side-nav" id="sideNav">
+      <div class="np-sec">Work</div>
+      <button class="nav-item" data-view="overview"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12 12 3l9 9M5 10v10h5v-6h4v6h5V10"/></svg>Overview</button>
+      <button class="nav-item" data-view="calendar"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Calendar</button>
+      <div class="nav-item nav-parent open" id="navBoardsToggle">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="11" rx="1"/></svg>
+        <span class="np-label">Boards</span>
+        <button class="nav-add" id="navAddBoard" title="New board"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg></button>
+      </div>
+      <div id="navBoards" class="board-sublist"></div>
+      <button class="nav-item" data-view="backlog"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>Backlog</button>
+      <button class="nav-item" data-view="sprint"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v5h-5"/><path d="m9 12 2 2 4-4"/></svg>Active sprint</button>
+      <button class="nav-item" data-view="list"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>List View</button>
+      <button class="nav-item" data-view="qa"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 2h6M10 2v5.5L5.5 18a2 2 0 0 0 1.8 3h9.4a2 2 0 0 0 1.8-3L14 7.5V2"/><path d="M7.5 14h9"/></svg>QA &amp; Testing</button>
+      <button class="nav-item" data-view="deployments"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>Deployments</button>
+      <button class="nav-item" data-view="epics"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>Epics</button>
+      <button class="nav-item" data-view="projects"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Projects</button>
+      <div class="nav-sep"></div>
+      <div class="np-sec">Insights</div>
+      <div class="nav-item nav-parent open" id="navAnalyticsToggle">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M7 15l3-4 3 3 4-6"/></svg>
+        <span class="np-label">Dashboards</span>
+      </div>
+      <div id="navAnalytics" class="board-sublist">
+        <button class="nav-item sub-item" data-atab="productivity"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>Productivity</button>
+        <button class="nav-item sub-item" data-atab="delivery"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>Delivery</button>
+        <button class="nav-item sub-item" data-atab="priority"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>Priority Tasks</button>
+      </div>
+      <button class="nav-item" data-view="sprintreports"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>Sprint reports</button>
+      <button class="nav-item" data-view="flow"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17c3-4 5-4 8-1s5 3 10-3"/><path d="M3 21h18"/><path d="M3 11c3-3 5-3 8 0s5 2 10-4"/></svg>Flow reports</button>
+      <button class="nav-item" data-view="reports"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>Reports</button>
+      <div class="nav-sep"></div>
+      <div class="np-sec">Manage</div>
+      <button class="nav-item" data-view="team"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13A4 4 0 0 1 16 11"/></svg>Team</button>
+      <button class="nav-item" data-view="users"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>Members</button>
+      <button class="nav-item" id="navColumns"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>Board settings</button>
+      <button class="nav-item" data-view="settings"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Settings</button>
+    </nav>
+  </aside>
+
+  <!-- Main -->
+  <div class="content">
+    <button class="board-slide left" id="boardSlideL" aria-label="Scroll board left" title="Scroll left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+    <button class="board-slide right" id="boardSlideR" aria-label="Scroll board right" title="Scroll right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+    <div class="board-hbar" id="boardHbar" aria-hidden="true"><div class="board-hbar-thumb" id="boardHbarThumb"></div></div>
+    <div class="stickyhead">
+    <div class="topbar">
+      <div class="page-title" id="pageTitle">Board</div>
+      <div class="board-switch" id="boardSwitch">
+        <div class="grp-wrap">
+          <button class="btn" id="groupBtn">Group: <span id="groupLbl">None</span><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="grp-menu" id="groupMenu">
+            <button data-grp="none" class="on">None</button>
+            <button data-grp="assignee">Assignee</button>
+            <button data-grp="epic">Epic</button>
+            <button data-grp="priority">Priority</button>
+            <button data-grp="type">Type</button>
+          </div>
+        </div>
+        <button class="btn" id="boardFlowBtn" title="Boards, columns & workflow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="12" r="2"/><path d="M8 6h6a2 2 0 0 1 2 2v2M8 18h6a2 2 0 0 0 2-2v-2"/></svg>Flow</button>
+      </div>
+      <div class="spacer"></div>
+      <div class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4-4"/></svg>
+        <input id="search" placeholder="Search tickets…" autocomplete="off" name="ticket-search-nofill" readonly onfocus="this.removeAttribute('readonly')"/>
+      </div>
+      <button class="btn primary" id="newTeamBtn">Create team</button>
+      <button class="btn primary" id="newTaskBtn">Create ticket</button>
+    </div>
+
+    <div class="filterbar" id="filterbar">
+      <div class="chips" id="filterChips"></div>
+      <button class="filter-clear" id="clearFilters">Clear all</button>
+      <div class="fbar-right">
+      <div class="period-box">
+        <div class="period-seg" id="periodSeg">
+          <button data-p="all" class="on">All</button>
+          <button data-p="today">Today</button>
+          <button data-p="week">Week</button>
+          <button data-p="month">Month</button>
+          <button data-p="custom">Custom</button>
+        </div>
+        <div class="pcustom-wrap" id="fPeriodCustom" style="display:none"></div>
+      </div>
+      <button class="fb-refresh" id="boardRefresh" title="Refresh data"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6"/></svg></button>
+      </div>
+    </div>
+    </div>
+    <div class="fmenu" id="filterMenu"></div>
+    <div class="fmenu" id="cfMenu"></div>
+    <div class="cardmenu" id="cardMenu"></div>
+    <div class="ovpop" id="ovPop"></div>
+    <div class="ep-cmenu" id="epCMenu"></div>
+    <div class="tsk-fmenu" id="prFMenu"></div>
+
+    <div class="scroll" id="scroll">
+      <div class="board" id="board"></div>
+      <div class="listwrap" id="listwrap" style="display:none"></div>
+      <div class="listwrap" id="epicswrap" style="display:none"></div>
+      <div class="pagewrap" id="overviewwrap" style="display:none"></div>
+      <div class="pagewrap" id="qawrap" style="display:none"></div>
+      <div class="pagewrap" id="deploymentswrap" style="display:none"></div>
+      <div class="pagewrap" id="analyticswrap" style="display:none"></div>
+      <div class="pagewrap" id="reportswrap" style="display:none"></div>
+      <div class="pagewrap" id="projectswrap" style="display:none"></div>
+      <div class="pagewrap" id="backlogwrap" style="display:none"></div>
+      <div class="pagewrap" id="sprintwrap" style="display:none"></div>
+      <div class="pagewrap" id="sprintreportswrap" style="display:none"></div>
+      <div class="pagewrap" id="flowwrap" style="display:none"></div>
+      <div class="pagewrap" id="releaseswrap" style="display:none"></div>
+      <div class="pagewrap" id="timelinewrap" style="display:none"></div>
+      <div class="pagewrap" id="calendarwrap" style="display:none"></div>
+      <div class="pagewrap" id="dashboardwrap" style="display:none"></div>
+      <div class="pagewrap" id="velocitywrap" style="display:none"></div>
+      <div class="pagewrap" id="usersedwrap" style="display:none"></div>
+      <div class="pagewrap" id="settingswrap" style="display:none"></div>
+      <div class="pagewrap" id="boardsettingswrap" style="display:none"></div>
+      <div class="pagewrap" id="teamwrap" style="display:none"></div>
+      <div class="pagewrap" id="soonwrap" style="display:none"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Slide-over -->
+<div class="overlay" id="overlay"></div>
+<div class="panel" id="panel"></div>
+<div id="acctScrim" class="acd-scrim"></div>
+<div id="projPopScrim" class="pp-scrim"><div id="projPop" class="pp"></div></div>
+<button class="chat-fab" id="chatFab" title="Tech-Talk" aria-label="Open Tech-Talk"><svg class="chat-fab-ico" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M7 9h10M7 13h6"/></svg><span class="chat-fab-label">Tech-Talk</span><span class="chat-fab-badge" id="chatFabBadge" style="display:none"></span></button>
+<div class="botbar" id="botbar">
+  <div class="bb-left">
+    <button class="bb-nav" data-bb="techtalk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M7 9h10M7 13h6"/></svg><span>Tech-Talk</span><span class="bb-dot" id="botTtBadge" style="display:none"></span></button>
+    <div class="bb-sep"></div>
+    <button class="bb-nav" data-bb="board"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="11" rx="1"/></svg><span>Board</span></button>
+    <button class="bb-nav" data-bb="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 3l9 9M5 10v10h5v-6h4v6h5V10"/></svg><span>My Work</span></button>
+  </div>
+  <div class="bb-guest" id="guestBar" role="status" hidden title="You’re looking at sample data. Changes stay in this tab and disappear when you refresh.">
+    <span class="bb-guest-dot" aria-hidden="true"></span>
+    <span class="bb-guest-t"><b>Guest preview</b><span class="bb-guest-sub">Changes aren’t saved</span></span>
+    <button type="button" id="guestReset" onclick="leaveGuest()">Start over</button>
+    <button type="button" id="guestSignIn" class="primary" onclick="leaveGuest()">Sign in</button>
+  </div>
+  <div class="bb-right">
+    <button class="bb-ic" data-bb="notif" title="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bb-badge" id="botNotifBadge" style="display:none"></span></button>
+    <button class="bb-ic" data-bb="timeline" title="Activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></button>
+    <button class="bb-ic" data-bb="calendar" title="Calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></button>
+    <button class="bb-ic" data-bb="shortcuts" title="Keyboard shortcuts"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M7 16h10"/></svg></button>
+    <div class="bb-sep"></div>
+    <button class="bb-ic" data-bb="settings" title="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></button>
+  </div>
+</div>
+<div class="cmdk-scrim" id="cmdkScrim">
+  <div class="cmdk">
+    <div class="cmdk-in-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input id="cmdkInput" placeholder="Search tickets, people, or jump to a view…" autocomplete="off"/><span class="cmdk-esc">Esc</span></div>
+    <div class="cmdk-results" id="cmdkResults"></div>
+  </div>
+</div>
+<div class="modal-wrap" id="kbdWrap"><div class="modal sub-modal" style="width:440px">
+  <div class="modal-h">Keyboard shortcuts</div>
+  <div class="modal-b" id="kbdBody"></div>
+  <div class="modal-f"><button class="btn" id="kbdClose">Close</button></div>
+</div></div>
+<div class="chat-win" id="chatWin"></div>
+
+<!-- New ticket modal -->
+<div class="modal-wrap" id="modalWrap">
+  <div class="modal nt-modal">
+    <div class="modal-h nt-h"><span class="nt-key nt-key-hdr" id="ntKeyBadge"><span class="nt-live"></span><span id="ntKeyText"></span><span class="nt-caret"></span></span><button class="nt-x" id="ntX" type="button">✕</button></div>
+    <div class="nt-grid">
+      <div class="nt-left">
+        <input id="ntTitle" class="nt-title" placeholder="Ticket title *" autocomplete="off"/>
+        <textarea id="ntDesc" class="nt-desc" placeholder="Add a description…"></textarea>
+      </div>
+      <div class="nt-rail">
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></span><span class="ntrow-l">Project<span class="req">*</span></span><button type="button" class="nt-val" data-for="ntProject"><span class="nt-val-in"></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><select id="ntProject" class="nt-hidden" data-enh="1"></select></div>
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/></svg></span><span class="ntrow-l">Type<span class="req">*</span></span><button type="button" class="nt-val" data-for="ntType"><span class="nt-val-in"></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><select id="ntType" class="nt-hidden" data-enh="1"></select></div>
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V4M4 4h13l-2 4 2 4H4"/></svg></span><span class="ntrow-l">Priority<span class="req">*</span></span><button type="button" class="nt-val" data-for="ntPriority"><span class="nt-val-in"></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><select id="ntPriority" class="nt-hidden" data-enh="1"><option>Highest</option><option>High</option><option selected>Medium</option><option>Low</option><option>Lowest</option></select></div>
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18" rx="1"/><rect x="14" y="3" width="7" height="11" rx="1"/></svg></span><span class="ntrow-l">Status<span class="req">*</span></span><button type="button" class="nt-val" data-for="ntStatus"><span class="nt-val-in"></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><select id="ntStatus" class="nt-hidden" data-enh="1"></select></div>
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="ntrow-l">Assignee</span><button type="button" class="nt-val" data-for="ntAssignee"><span class="nt-val-in"></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><select id="ntAssignee" class="nt-hidden" data-enh="1"></select></div>
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span class="ntrow-l">Reporter<span class="req">*</span></span><button type="button" class="nt-val" data-for="ntReporter"><span class="nt-val-in"></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><select id="ntReporter" class="nt-hidden" data-enh="1"></select></div>
+        <div class="ntrow" id="ntParentField"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><span class="ntrow-l">Epic</span><button type="button" class="nt-val" data-for="ntParent"><span class="nt-val-in"></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><select id="ntParent" class="nt-hidden" data-enh="1"></select></div>
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span><span class="ntrow-l">Start</span><button type="button" class="nt-val ph" data-date="ntStart"><span class="nt-val-in"><span>Pick date</span></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><input id="ntStart" type="date" class="nt-dateinp" tabindex="-1"/></div>
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg></span><span class="ntrow-l">Due</span><button type="button" class="nt-val ph" data-date="ntDue"><span class="nt-val-in"><span>Pick date</span></span><svg class="nt-val-ch" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button><input id="ntDue" type="date" class="nt-dateinp" tabindex="-1"/></div>
+        <div class="ntrow"><span class="ntrow-ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span class="ntrow-l nt-l-wide">Original estimate</span><input id="ntEstimate" type="text" placeholder="5h 30m" class="ntrow-in nt-est-in" autocomplete="off"/></div><div class="nt-esthint"><b>h</b> hours · <b>m</b> minutes — e.g. <b>5h</b>, <b>5h30m</b>, <b>45m</b></div>
+      </div>
+    </div>
+    <div class="modal-f nt-f">
+      <button class="btn" id="ntCancel" type="button">Cancel</button>
+      <button class="btn primary" id="ntCreate" type="button">Create ticket</button>
+    </div>
+  </div>
+</div>
+
+<div class="nt-menu" id="ntMenu"></div>
+<div class="toast" id="toast"></div>
+<div id="spacesScreen" class="sp-screen on">
+  <div class="sp-body">
+    <div class="sp-eyebrow">Workspaces</div>
+    <h1 class="sp-title">Choose a workspace</h1>
+    <p class="sp-lede">Open a workspace to jump into its boards, or spin up a new one.</p>
+    <div class="sp-grid" id="spGrid"><div class="sp-empty">Loading workspaces…</div></div>
+  </div>
+</div>
+<div id="spModalScrim" class="sp-mscrim"><div class="sp-modal">
+  <div class="sp-modal-h"><h2 id="spModalTitle">Create workspace</h2><button class="sp-mx" id="spModalX">&#10005;</button></div>
+  <div class="sp-modal-b">
+    <label class="sp-lbl">Name<span class="req">*</span></label><input class="sp-inp" id="spmName" placeholder="e.g. Marketing Ops" autocomplete="off">
+    <label class="sp-lbl">Description</label><input class="sp-inp" id="spmDesc" placeholder="Short description" autocomplete="off">
+    <label class="sp-lbl">Icon</label><div class="sp-icons" id="spmIcons"></div>
+    <label class="sp-lbl">Who can access <span class="sp-lbl-n" id="spmCount"></span></label>
+    <div class="sp-members" id="spmMembers"></div>
+  </div>
+  <div class="sp-modal-f"><button class="sp-mdelete" id="spModalDelete" style="display:none">Delete workspace</button><div class="sp-fspacer"></div><button class="sp-mcancel" id="spModalCancel">Cancel</button><button class="btn primary" id="spModalSave">Create</button></div>
+</div></div>
+<div id="pjModalScrim" class="sp-mscrim"><div class="sp-modal">
+  <div class="sp-modal-h"><h2 id="pjModalTitle">Edit project</h2><button class="sp-mx" id="pjModalX">&#10005;</button></div>
+  <div class="sp-modal-b">
+    <label class="sp-lbl">Name<span class="req">*</span></label><input class="sp-inp" id="pjmName" placeholder="Project name" autocomplete="off">
+    <label class="sp-lbl" style="margin-top:14px">Key<span class="req">*</span></label><input class="sp-inp" id="pjmKey" placeholder="e.g. LMS" maxlength="10" autocomplete="off">
+    <p class="bs-note" style="margin:8px 0 0">Prefixes every ticket in this project — <b>LMS-1</b>, <b>LMS-2</b>. Must be unique.</p>
+  </div>
+  <div class="sp-modal-f"><button class="sp-mdelete" id="pjModalDelete">Delete project</button><div class="sp-fspacer"></div><button class="sp-mcancel" id="pjModalCancel">Cancel</button><button class="btn primary" id="pjModalSave">Save changes</button></div>
+</div></div>
+<div class="bn-pop" id="boardMenu">
+  <button data-act="configure"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="12" r="2"/><path d="M8 6h6a2 2 0 0 1 2 2v2M8 18h6a2 2 0 0 0 2-2v-2"/></svg>Configure board</button>
+  <button data-act="rename"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>Rename</button>
+  <div class="bn-pop-sep"></div>
+  <button class="danger" data-act="delete"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>Delete board</button>
+</div>
+<div class="bn-pop" id="depMenu">
+  <button data-act="open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Open ticket</button>
+  <button data-act="copykey"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy key</button>
+  <button data-act="copylink"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>Copy link</button>
+  <div class="bn-pop-sep"></div>
+  <button class="danger" data-act="del"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6M9 9l6 6"/></svg>Remove from tracker</button>
+  <button class="danger" data-act="delete"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>Delete ticket</button>
+</div>
+<div class="bn-pop" id="qaMenu">
+  <button data-act="open"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Open ticket</button>
+  <button data-act="copykey"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy key</button>
+  <button data-act="copylink"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>Copy link</button>
+  <div class="bn-pop-sep"></div>
+  <button class="danger" data-act="clear"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>Clear QA cases &amp; fixes</button>
+  <button class="danger" data-act="delete"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M10 11v6M14 11v6"/></svg>Delete ticket</button>
+</div>
+<div class="modal-wrap" id="depVerifyWrap">
+  <div class="modal sub-modal" style="width:470px">
+    <div class="modal-h" id="depVfHead">Deployment verification</div>
+    <div class="modal-b" id="depVfBody"></div>
+    <div class="modal-f"><button class="btn" id="depVfClose">Done</button></div>
+  </div>
+</div>
+<div class="modal-wrap" id="qaVerifyWrap">
+  <div class="modal sub-modal" style="width:540px">
+    <div class="modal-h" id="qaVfHead">QA sign-off</div>
+    <div class="modal-b" id="qaVfBody"></div>
+    <div class="modal-f"><button class="btn" id="qaVfClose">Done</button></div>
+  </div>
+</div>
+<div class="modal-wrap" id="cfmWrap"><div class="modal sub-modal" style="width:460px">
+  <div class="modal-h" id="cfmHead">Delete</div>
+  <div class="modal-b">
+    <p class="cfm-lead" id="cfmLead"></p>
+    <div class="cfm-choices" id="cfmChoices"></div>
+    <div class="cfm-impact" id="cfmImpact"></div>
+    <p class="cfm-warn" id="cfmWarn">This can't be undone.</p>
+  </div>
+  <div class="modal-f"><button class="btn" id="cfmCancel">Cancel</button><button class="btn cfm-go" id="cfmGo">Delete</button></div>
+</div></div>
+
+<input type="file" id="qaAttFile" accept=".pdf,.doc,.docx,.txt,.rtf,.xls,.xlsx,.ppt,.pptx,.csv,.md,.png,.jpg,.jpeg" style="display:none">
+<input type="file" id="pfPhotoFile" accept="image/png,image/jpeg,image/webp" style="display:none">
+<div class="modal-wrap" id="qaAttWrap"><div class="modal sub-modal" style="width:440px">
+  <div class="modal-h">Name this attachment</div>
+  <div class="modal-b">
+    <div class="qa-att-file" id="qaAttFileInfo"></div>
+    <div class="field" style="margin-top:14px"><label>Attachment name</label><input id="qaAttName" placeholder="e.g. Refund test cases" autocomplete="off"></div>
+  </div>
+  <div class="modal-f"><button class="btn" id="qaAttCancel">Cancel</button><button class="btn primary" id="qaAttUpload">Upload</button></div>
+</div></div>
+
+<div class="modal-wrap" id="depMarkWrap"><div class="modal sub-modal" style="width:520px">
+  <div class="modal-h">Record deployment<div style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px" id="depMarkSub"></div></div>
+  <div class="modal-b">
+    <div class="field"><label>Environments<span class="req">*</span></label>
+      <div class="env-pick" id="depEnvPick"></div>
+      <div class="loghint" style="margin-top:10px">Pick every environment this build went to \u2014 you can choose more than one.</div>
+    </div>
+    <div class="field"><label>Version number<span class="req">*</span></label>
+      <input id="depVersion" placeholder="e.g. 2.14.0" autocomplete="off"/>
+    </div>
+  </div>
+  <div class="modal-f"><button class="btn" id="depMarkCancel">Cancel</button><button class="btn primary" id="depMarkSave">Mark as deployed</button></div>
+</div></div>
+
+<div class="modal-wrap" id="envBlockWrap"><div class="modal sub-modal" style="width:490px">
+  <div class="modal-h">Block a test environment</div>
+  <div class="modal-b">
+    <div class="field"><label>Environment</label>
+      <div class="env-seg" id="envSeg"><button data-env="staging">Staging</button><button data-env="test">Test Environment</button></div>
+    </div>
+    <div class="env-avail" id="envAvail"></div>
+    <div class="env-frow">
+      <div class="field"><label>From</label><input type="datetime-local" id="envFrom"></div>
+      <div class="field"><label>To</label><input type="datetime-local" id="envTo"></div>
+    </div>
+  </div>
+  <div class="modal-f"><button class="btn" id="envCancel">Cancel</button><button class="btn primary" id="envSubmit">Block environment</button></div>
+</div></div>
+
+<!-- Create Epic modal -->
+<div class="modal-wrap" id="epicWrap">
+  <div class="modal epic-modal">
+    <div class="modal-h epm-h"><span>Create epic</span><button class="nt-x" id="epX" type="button">&#10005;</button></div>
+    <div class="epm-body">
+      <div class="epm-main">
+        <input id="epmTitle" class="epm-title" placeholder="Epic name *" autocomplete="off"/>
+        <textarea id="epmDesc" class="epm-desc" placeholder="What is this epic about? (optional)"></textarea>
+        <div class="epm-tasks-h"><span>Tasks in this epic</span><button class="epm-addtask" id="epmAddTask" type="button"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 5v14M5 12h14"/></svg>Add task</button></div>
+        <div class="epm-tasks" id="epmTasks"></div>
+      </div>
+      <div class="epm-rail">
+        <div class="epm-frow"><label>Project<span class="req">*</span></label><select id="epmProject"></select></div>
+        <div class="epm-frow"><label>Lead / assignee</label><select id="epmLead"></select></div>
+        <div class="epm-frow"><label>Due date</label><input type="date" id="epmDue"/></div>
+        <div class="epm-hint">Add as many tasks as you like &mdash; each becomes a ticket linked to this epic.</div>
+      </div>
+    </div>
+    <div class="modal-f"><button class="btn ghost" id="epCancel" type="button">Cancel</button><button class="btn primary" id="epSubmit" type="button">Create epic</button></div>
+  </div>
+</div>
+
+<!-- Create project dialog -->
+<!-- Workflow builder (full screen) -->
+<div class="fxs" id="fxScreen"></div>
+
+<!-- Name a transition -->
+<div class="modal-wrap" id="trNameWrap">
+  <div class="modal sub-modal" style="width:420px">
+    <div class="modal-h">Name this transition<div style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px">
+      This is what people see on the board and in the chart.</div></div>
+    <div class="modal-b">
+      <div class="field" id="trPickWrap" style="margin-bottom:14px"><label id="trPickLbl">Status</label>
+        <select id="trPick"></select></div>
+      <div class="tr-route" id="trRoute"></div>
+      <div class="field" style="margin-top:14px"><label>Transition name</label>
+        <input id="trNameIn" autocomplete="off" placeholder="e.g. Start Development"/></div>
+    </div>
+    <div class="modal-f"><button class="btn" id="trNameCancel">Cancel</button>
+      <button class="btn primary" id="trNameOk">Add transition</button></div>
+  </div>
+</div>
+
+<!-- Confirm -->
+<div class="modal-wrap" id="cfWrap">
+  <div class="modal sub-modal" style="width:400px">
+    <div class="modal-h" id="cfTitle">Are you sure?</div>
+    <div class="modal-b"><p class="cf-body" id="cfBody"></p></div>
+    <div class="modal-f"><button class="btn" id="cfNo">Cancel</button>
+      <button class="btn primary" id="cfYes">Confirm</button></div>
+  </div>
+</div>
+
+<!-- Add a status -->
+<div class="modal-wrap" id="stPickWrap">
+  <div class="modal sub-modal" style="width:460px">
+    <div class="modal-h">Add a status<div style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px">
+      Statuses capture the stages of your working process. Add more to represent different stages in your team\u2019s process.</div></div>
+    <div class="modal-b">
+      <div class="field"><label>Search for a status</label><input id="stPickIn" placeholder="Type to search or create\u2026" autocomplete="off"/></div>
+      <div class="stp-msg" id="stPickMsg"></div>
+      <div class="stp-list" id="stPickList"></div>
+    </div>
+    <div class="modal-f"><button class="btn" id="stPickCancel">Cancel</button><button class="btn primary" id="stPickAdd">Add</button></div>
+  </div>
+</div>
+
+<!-- Edit a status -->
+<div class="modal-wrap" id="stEdWrap">
+  <div class="modal sub-modal" style="width:420px">
+    <div class="modal-h">Edit status</div>
+    <div class="modal-b">
+      <div class="field" style="margin-bottom:14px"><label>Status category</label>
+        <select id="stEdCat"><option value="todo">To do</option><option value="inprogress">In progress</option><option value="done">Done</option></select></div>
+      <div class="field"><label>Status name</label><input id="stEdName" autocomplete="off"/></div>
+    </div>
+    <div class="modal-f"><button class="btn" id="stEdCancel">Cancel</button><button class="btn primary" id="stEdSave">Update</button></div>
+  </div>
+</div>
+
+<div class="modal-wrap" id="projWrap">
+  <div class="modal sub-modal" style="width:520px">
+    <div class="modal-h">Create project<div style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px">Group tickets under a name and a key.</div></div>
+    <div class="modal-b">
+      <div class="pj-frow">
+        <div class="field"><label>Project name<span class="req">*</span></label><input id="pjName" placeholder="e.g. Marketing pages" autocomplete="off"/></div>
+        <div class="field"><label>Key<span class="req">*</span></label><input id="pjKey" placeholder="MKT" maxlength="10" autocomplete="off"/></div>
+      </div>
+      <div class="field" style="margin-top:12px"><label>Board</label><select id="pjBoard" class="pj-board-sel"></select>
+        <div class="loghint" style="margin-top:6px">The board this project lives under. Its tickets appear on this board by default.</div></div>
+      <div class="loghint">The key prefixes every ticket in this project &mdash; <b>MKT-1</b>, <b>MKT-2</b>. It fills in from the name, and must be unique.</div>
+    </div>
+    <div class="modal-f"><button class="btn" id="pjCancel">Cancel</button><button class="btn primary" id="pjCreate">Create project</button></div>
+  </div>
+</div>
+
+<!-- Board creation wizard -->
+<div class="modal-wrap" id="bwWrap">
+  <div class="modal sub-modal" style="width:600px;max-width:94vw">
+    <div class="modal-h">Create board<div style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px">Set up its workflow and projects before it goes live.</div></div>
+    <div class="bw-steps" id="bwSteps"></div>
+    <div class="modal-b" id="bwBody" style="min-height:220px"></div>
+    <div class="modal-f">
+      <button class="btn" id="bwBack" type="button">Back</button>
+      <div class="sp-fspacer" style="flex:1"></div>
+      <button class="btn" id="bwCancel" type="button">Cancel</button>
+      <button class="btn primary" id="bwNext" type="button">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- Workflow editor (full screen) -->
+<div class="wf-screen" id="wfScreen">
+  <header class="wf-top">
+    <div class="wf-title"><span class="wf-t1">Workflow for</span>
+      <button class="wf-board" id="wfBoardName" type="button"></button></div>
+    <nav class="wf-tools" id="wfTools"></nav>
+    <div class="wf-actions">
+      <span class="bs-dirty" id="wfDirty">Unsaved changes</span>
+      <button class="tsk-btn tsk-btn--sm" id="wfSave" type="button" disabled>Update workflow</button>
+      <button class="tsk-btn tsk-btn--ghost tsk-btn--sm" id="wfDiscard" type="button">Close</button>
+    </div>
+  </header>
+  <div class="wf-body">
+    <div class="wf-stage" id="wfStage">
+      <div class="wf-bar">
+        <div class="fx-seg" id="wfMode">
+          <button type="button" data-fm="diagram">Diagram</button>
+          <button type="button" data-fm="text">Text</button>
+        </div>
+        <span style="flex:1"></span>
+        <label class="wf-chk"><input type="checkbox" id="wfLabels" checked/><span>Show transition labels</span></label>
+      </div>
+      <div class="wf-canvas" id="wfCanvas"></div>
+    </div>
+    <aside class="wf-side" id="wfSide"></aside>
+  </div>
+</div>
+
+<!-- Name a transition -->
+<div class="modal-wrap" id="trNameWrap">
+  <div class="modal sub-modal" style="width:420px">
+    <div class="modal-h">Name this transition<div style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px">
+      This is what people see on the board and in the chart.</div></div>
+    <div class="modal-b">
+      <div class="field" id="trPickWrap" style="margin-bottom:14px"><label id="trPickLbl">Status</label>
+        <select id="trPick"></select></div>
+      <div class="tr-route" id="trRoute"></div>
+      <div class="field" style="margin-top:14px"><label>Transition name</label>
+        <input id="trNameIn" autocomplete="off" placeholder="e.g. Start Development"/></div>
+    </div>
+    <div class="modal-f"><button class="btn" id="trNameCancel">Cancel</button>
+      <button class="btn primary" id="trNameOk">Add transition</button></div>
+  </div>
+</div>
+
+<!-- Confirm -->
+<div class="modal-wrap" id="cfWrap">
+  <div class="modal sub-modal" style="width:400px">
+    <div class="modal-h" id="cfTitle">Are you sure?</div>
+    <div class="modal-b"><p class="cf-body" id="cfBody"></p></div>
+    <div class="modal-f"><button class="btn" id="cfNo">Cancel</button>
+      <button class="btn primary" id="cfYes">Confirm</button></div>
+  </div>
+</div>
+
+<!-- Add a status -->
+<div class="modal-wrap" id="wfAddWrap">
+  <div class="modal sub-modal" style="width:460px">
+    <div class="modal-h">Add a status<div style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px">
+      Statuses capture the stages of your working process.</div></div>
+    <div class="modal-b">
+      <div class="field"><label>Search for a status</label>
+        <input id="wfAddName" placeholder="e.g. Code Review" autocomplete="off"/></div>
+      <div class="wf-sug" id="wfAddSug"></div>
+      <div class="fgrid2" style="margin-top:14px">
+        <div class="field"><label>Category</label><select id="wfAddCat">
+          <option value="todo">To do</option><option value="inprogress">In progress</option><option value="done">Done</option>
+        </select></div>
+        <div class="field"><label>Colour</label><div class="pj-swatches" id="wfAddSw"></div></div>
+      </div>
+    </div>
+    <div class="modal-f"><button class="btn" id="wfAddCancel">Cancel</button><button class="btn primary" id="wfAddGo">Add</button></div>
+  </div>
+</div>
+
+<!-- Edit status -->
+<div class="modal-wrap" id="wfEditWrap">
+  <div class="modal sub-modal" style="width:440px">
+    <div class="modal-h">Edit status</div>
+    <div class="modal-b">
+      <div class="field" style="margin-bottom:14px"><label>Status category</label>
+        <select id="wfEdCat"><option value="todo">To do</option><option value="inprogress">In progress</option><option value="done">Done</option></select></div>
+      <div class="field" style="margin-bottom:14px"><label>Status name</label><input id="wfEdName"/></div>
+      <div class="field"><label>Colour</label><div class="pj-swatches" id="wfEdSw"></div></div>
+    </div>
+    <div class="modal-f"><button class="btn" id="wfEdCancel">Cancel</button><button class="btn primary" id="wfEdGo">Update</button></div>
+  </div>
+</div>
+
+<!-- Subtask dialog -->
+<div class="modal-wrap" id="subWrap">
+  <div class="modal sub-modal" style="width:430px">
+    <div class="modal-h">Subtask<div id="subCtx" style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px"></div></div>
+    <div class="modal-b">
+      <div class="field" style="margin-bottom:14px"><label>Title</label><input id="sbTitle" placeholder="What needs doing?"/></div>
+      <div class="fgrid2">
+        <div class="field"><label>Assignee</label><select id="sbWho"></select></div>
+        <div class="field"><label>Time estimate</label><input id="sbEst" placeholder="e.g. 2h 30m"/></div>
+      </div>
+      <div class="sb-done-row">
+        <div><div class="sb-done-t">Mark completed</div><div class="sb-done-d">Ticks it off in the subtask list.</div></div>
+        <button type="button" class="stx-tgl" id="sbDone"></button>
+      </div>
+      <div class="loghint" style="margin-top:14px">Estimates roll up into the ticket\u2019s <b>original estimate</b>. Use <b>2w 4d 6h 45m</b> \u00b7 w = weeks, d = days, h = hours, m = minutes</div>
+    </div>
+    <div class="modal-f"><button class="btn" id="sbCancel">Cancel</button><button class="btn primary" id="sbSave">Save</button></div>
+  </div>
+</div>
+
+<!-- Log time modal (Jira-style) -->
+<div class="modal-wrap" id="logWrap">
+  <div class="modal log-modal" style="width:470px">
+    <div class="modal-h">Log time<div id="logCtx" style="font-size:12px;font-weight:400;color:var(--muted);margin-top:3px"></div></div>
+    <div class="modal-b">
+      <div class="logprog">
+        <div class="lptrack"><div class="lpfill" id="lpFill"></div></div>
+        <div class="lplbl"><span id="lpLogged">0h logged</span><span id="lpRemain">0h remaining</span></div>
+      </div>
+      <p class="logest" id="logEst"></p>
+      <div class="field-row">
+        <div class="field"><label>Category</label><select id="logCat"></select></div>
+        <div class="field"><label>Team member</label><select id="logWho"></select></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Time spent</label><input id="logSpent" placeholder="e.g. 3h 30m" autocomplete="off"/></div>
+        <div class="field"><label>Time remaining</label><input id="logRem" placeholder="e.g. 2h" autocomplete="off"/></div>
+      </div>
+      <div class="field-row">
+        <div class="field"><label>Date</label><input id="logDate" type="date"/></div>
+        <div class="field"><label>Note (optional)</label><input id="logNote" autocomplete="off"/></div>
+      </div>
+      <div class="loghint">Use the format <b>2w 4d 6h 45m</b> &nbsp;·&nbsp; w = weeks, d = days, h = hours, m = minutes</div>
+    </div>
+    <div class="modal-f"><button class="btn" id="logCancel">Cancel</button><button class="btn primary" id="logSave">Save</button></div>
+  </div>
+</div>
+
+<!-- Edit member modal -->
+<div class="modal-wrap" id="umEditWrap">
+  <div class="modal" style="width:460px">
+    <div class="modal-h">Edit member</div>
+    <div class="modal-b">
+      <div class="field"><label>Full name</label><input id="ueName" autocomplete="off"/></div>
+      <div class="field"><label>Email address</label><input id="ueEmail" type="email" autocomplete="off"/></div>
+      <div class="field-row">
+        <div class="field"><label>Designation</label><select id="ueDesig"></select></div>
+        <div class="field"><label>Avatar colour</label><input id="ueColor" type="color" style="height:38px;padding:2px"/></div>
+      </div>
+      <div class="loghint">Changes sync to your workspace. This updates the member's profile email — not their Supabase login email (that must be changed in Supabase → Authentication).</div>
+    </div>
+    <div class="modal-f"><button class="btn" id="ueCancel">Cancel</button><button class="btn primary" id="ueSave">Save changes</button></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js?v=202609171427"></script>
+<script src="js/01-config-and-data.js?v=202609171427"></script>
+<script src="js/02-time-totals.js?v=202609171427"></script>
+<script src="js/03-view-state-render.js?v=202609171427"></script>
+<script src="js/04-dropdowns.js?v=202609171427"></script>
+<script src="js/05-task-panel.js?v=202609171427"></script>
+<script src="js/06-team-chat.js?v=202609171427"></script>
+<script src="js/07-new-ticket.js?v=202609171427"></script>
+<script src="js/08-board-settings.js?v=202609171427"></script>
+<script src="js/09-workflow-editor.js?v=202609171427"></script>
+<script src="js/10-workflow-builder.js?v=202609171427"></script>
+<script src="js/11-status-picker.js?v=202609171427"></script>
+<script src="js/12-views-and-navigation.js?v=202609171427"></script>
+<script src="js/13-velocity-and-burndown.js?v=202609171427"></script>
+<script src="js/14-projects.js?v=202609171427"></script>
+<script src="js/15-analytics.js?v=202609171427"></script>
+<script src="js/16-overview-helpers.js?v=202609171427"></script>
+<script src="js/17-supabase-sync.js?v=202609171427"></script>
+<script src="js/18-members.js?v=202609171427"></script>
+<script src="js/19-url-routing.js?v=202609171427"></script>
+<script src="js/20-notifications.js?v=202609171427"></script>
+<script src="js/21-sprints-and-backlog.js?v=202609171427"></script>
+<script src="js/22-sprint-dialogs.js?v=202609171427"></script>
+<script src="js/23-guest-preview.js?v=202609171427"></script>
+<script src="js/24-boards.js?v=202609171427"></script>
+</body>
+</html>

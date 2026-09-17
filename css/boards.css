@@ -1,0 +1,78 @@
+body.board-pick #scroll > :not(#boardpickwrap){display:none !important}
+body.board-pick #newTaskBtn{display:none !important}
+body.board-pick #filterbar,body.board-pick #boardHbar,body.board-pick .topbar .grp-wrap,body.board-pick .topbar #boardFlowBtn,body.board-pick .topbar .search{display:none !important}
+body.has-crumb #boardSwitch{display:none !important}
+.tsk-crumb{display:flex;align-items:center;gap:6px;font:500 13px Inter,system-ui,sans-serif;color:var(--muted);margin-right:6px;min-width:0}
+.tsk-crumb[hidden]{display:none}
+.tc-link{border:0;background:none;padding:4px 6px;border-radius:6px !important;color:var(--muted);font:500 13px Inter,system-ui,sans-serif;cursor:pointer;white-space:nowrap}
+.tc-link:hover{background:var(--surface-2);color:var(--ink)}
+.tc-sep{color:var(--faint)}
+.tc-cur{color:var(--ink-2);font-weight:600;white-space:nowrap}
+.tc-board{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);padding:4px 8px 4px 5px;border-radius:7px !important;font:600 13px Inter,system-ui,sans-serif;color:var(--ink);cursor:pointer;white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+.tc-board:hover{border-color:#D5D8DE}
+.tc-type{display:inline-flex;align-items:center;font:700 10.5px Inter,system-ui,sans-serif;letter-spacing:.02em;padding:2px 7px;border-radius:5px !important;text-transform:uppercase}
+.tc-type.scrum{background:#E3EDF7;color:#0C5A9E}
+.tc-type.kanban{background:#EDE7FB;color:#6D28D9}
+.tc-type.all{background:var(--surface-3);color:var(--ink-2)}
+.bp-page{max-width:1120px}
+.bp-head{margin:8px 0 18px}
+.bp-kicker{font:600 12px Inter,system-ui,sans-serif;color:var(--accent);margin-bottom:4px}
+.bp-head h2{font-size:22px;font-weight:650;letter-spacing:-.02em;margin:0 0 6px}
+.bp-head p{margin:0;color:var(--muted);font-size:13.5px;max-width:62ch;line-height:1.5}
+.bp-note{background:#EDE7FB;color:#4C1D95;border-radius:8px !important;padding:10px 12px;font-size:13px;margin:0 0 14px}
+.bp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.bp-card{position:relative;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px !important;padding:14px 14px 12px;cursor:pointer;display:flex;flex-direction:column;gap:9px;min-height:150px;font:inherit;color:inherit;transition:border-color .12s,box-shadow .12s}
+.bp-card:hover{border-color:#CDD1D8;box-shadow:0 8px 22px -14px rgba(16,20,30,.3)}
+.bp-card:focus-visible{outline:2px solid var(--brand-coral,#FE5459);outline-offset:2px}
+.bp-card.last{border-color:var(--brand-mist-line,#FFD3CC);box-shadow:inset 0 0 0 1px var(--brand-mist-line,#FFD3CC)}
+.bp-card.off{opacity:.5;cursor:not-allowed;box-shadow:none}
+.bp-top{display:flex;align-items:center;gap:6px}
+.bp-lock{font:600 10.5px Inter,system-ui,sans-serif;color:var(--muted);background:var(--surface-3);padding:2px 7px;border-radius:5px !important}
+.bp-name{font-size:16px;font-weight:650;letter-spacing:-.01em;color:var(--ink)}
+.bp-projs{display:flex;flex-wrap:wrap;gap:5px}
+.bp-projs span{font:600 11px "Roboto Mono",ui-monospace,monospace;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);padding:2px 6px;border-radius:4px !important}
+.bp-projs em{font-style:normal;font-size:12.5px;color:var(--muted)}
+.bp-meta{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:auto;font-size:12px;color:var(--muted)}
+.bp-meta b{color:var(--ink);font-weight:650}
+.bp-why{font-size:12px;color:#6D28D9}
+.bp-new{border-style:dashed;align-items:flex-start;justify-content:center;background:transparent}
+.bp-plus{font-size:22px;line-height:1;color:var(--muted)}
+.bt-card{border:1px solid var(--line);border-radius:10px !important;background:var(--surface);padding:6px 16px 14px;margin:0 0 18px;max-width:880px}
+.bt-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--line-2);flex-wrap:wrap}
+.bt-lbl{display:flex;flex-direction:column;gap:3px;min-width:0}
+.bt-lbl b{font-size:13.5px;color:var(--ink)}
+.bt-lbl span{font-size:12.5px;color:var(--muted)}
+.bt-seg{display:inline-flex;border:1px solid var(--line);border-radius:7px !important;overflow:hidden;flex:none}
+.bt-seg button{border:0;background:var(--surface);padding:7px 14px;font:600 12.5px Inter,system-ui,sans-serif;color:var(--muted);cursor:pointer}
+.bt-seg button+button{border-left:1px solid var(--line)}
+.bt-seg button.on{background:var(--brand-ink,#0C0F18);color:#fff}
+.bt-seg button:disabled{cursor:default}
+.bt-sub{font:600 12px Inter,system-ui,sans-serif;color:var(--muted);margin:14px 0 6px}
+.bt-list{display:flex;flex-direction:column}
+.bt-mem{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line-2)}
+.bt-mem:first-child{border-top:0}
+.bt-nm{flex:1;font-size:13px;color:var(--ink);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bt-key{font:600 11px "Roboto Mono",ui-monospace,monospace;color:var(--ink-2);background:var(--surface-2);border:1px solid var(--line);padding:2px 6px;border-radius:4px !important}
+.bt-mem select,.bt-add select{height:30px;border:1px solid var(--line);border-radius:6px !important;background:var(--surface);padding:0 8px;font:500 12.5px Inter,system-ui,sans-serif;color:var(--ink-2)}
+.bt-x{border:0;background:none;color:var(--muted);cursor:pointer;width:28px;height:28px;border-radius:6px !important}
+.bt-x:hover{background:var(--surface-2);color:var(--crit)}
+.bt-add{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.bt-add .btn{height:30px;padding:0 12px}
+.bt-empty{font-size:12.5px;color:var(--muted);margin:4px 0}
+.bt-foot{font-size:12px;color:var(--muted);margin:12px 0 0}
+.bt-choice{display:flex;flex-direction:column;gap:8px}
+.bt-opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:8px !important;padding:10px 12px;cursor:pointer}
+.bt-opt:has(input:checked){border-color:var(--brand-ink,#0C0F18);box-shadow:inset 0 0 0 1px var(--brand-ink,#0C0F18)}
+.bt-opt input{margin-top:3px}
+.bt-opt span{font-size:12.5px;color:var(--muted);line-height:1.45}
+.bt-opt b{display:block;color:var(--ink);font-size:13.5px;margin-bottom:2px}
+.fl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fl-wip{display:grid;grid-template-columns:130px 1fr 28px;align-items:center;gap:10px;padding:6px 0;font-size:12.5px;color:var(--ink-2)}
+.fl-bar{height:10px;background:var(--surface-3);border-radius:5px !important;overflow:hidden}
+.fl-bar i{display:block;height:100%}
+.fl-wip b{text-align:right}
+@media (max-width:900px){ .fl-grid{grid-template-columns:1fr} .tsk-crumb .tc-link{display:none} }
+
+/* Projects and Epics hide the sticky header by default; keep it (and the breadcrumb) when a board is in scope */
+body.has-crumb[data-view="projects"] .stickyhead,body.has-crumb[data-view="epics"] .stickyhead{display:block !important}
+body.has-crumb[data-view="projects"] #filterbar,body.has-crumb[data-view="epics"] #filterbar,body.has-crumb[data-view="projects"] .topbar .search,body.has-crumb[data-view="epics"] .topbar .search,body.has-crumb[data-view="projects"] .topbar .grp-wrap,body.has-crumb[data-view="epics"] .topbar .grp-wrap,body.has-crumb[data-view="projects"] #boardFlowBtn,body.has-crumb[data-view="epics"] #boardFlowBtn{display:none !important}

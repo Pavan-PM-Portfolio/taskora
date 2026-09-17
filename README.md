@@ -27,11 +27,23 @@ Guests can click, drag and edit anything, but nothing survives the tab:
 
 Guests never see real workspace data. The sample is generated in the browser, with dates relative to today, so the burndown always looks current.
 
-Without `config.js` the app still opens on the sign-in page. Guest sign-in works; email sign-in explains that accounts aren't switched on yet:
+With empty keys in `config.js` the app still opens on the sign-in page. Guest sign-in works; email sign-in explains that accounts aren't switched on yet:
 
 ```bash
-cd web && python3 -m http.server 5500
+python3 -m http.server 5500
 ```
+
+## Boards: Scrum and Kanban
+
+Workspace › Board › Projects › Epics › Tickets. Every project, with its epics and tickets, belongs to one board.
+
+- **Pick a board first.** Board views ask which board to use, then remember the choice. These are Overview, Board, List, Projects, Epics, Backlog, sprints, Reports, QA, Deployments, Calendar and Board settings. Switch boards from the breadcrumb at the top.
+- **Scrum boards** get a backlog, sprints, burndown and velocity. **Kanban boards** flow continuously, so Backlog and sprint views only offer Scrum boards.
+- **Overview and Reports** can also show **All boards**.
+- **Flow reports** work on any board: cumulative flow, weekly throughput, cycle time, and ageing work in progress.
+- **Board settings** set the type, who can see the board, and the board's members. Access is either everyone in the workspace or members only; members are admin, member or viewer. Settings also move a project to another board, and ticket keys stay the same.
+- **Workspace views** never ask for a board: My work, Team, Members and Settings.
+- **Access is enforced in the database.** Members-only boards, their projects, tickets and time logs are invisible to non-members. Viewers can't change anything.
 
 ## Scrum: backlog, sprints and reports
 
@@ -73,18 +85,18 @@ cd web && python3 -m http.server 5500
 
 ```
 taskora/
-├── web/
-│   ├── index.html              the app
-│   ├── config.example.js       copy to config.js with your project URL + key
-│   └── assets/                 logo, mark, favicon
+├── index.html                login page (email sign-in, or sign in as a guest)
+├── app.html                  the app shell
+├── config.js                 Supabase URL + publishable key (empty = guest-only)
+├── css/                      base.css, taskora.css (brand), sprints.css, boards.css
+├── js/                       01-config-and-data.js … 24-boards.js, loaded in order
+│                             by app.html; login.js for the login page
+├── assets/                   logo, mark, favicon
 ├── supabase/
-│   ├── migrations/             schema, policies, guards, RPCs
-│   ├── functions/admin-users/  create members, change roles, reset passwords
+│   ├── migrations/           schema, sprints, board access (RLS)
+│   ├── functions/admin-users/
 │   └── config.toml
-├── scripts/
-│   ├── setup.sh                guided first-time setup and deploy
-│   ├── deploy.sh               checks, then db / functions / web
-│   └── deploy.env.example
+├── scripts/                  setup.sh, deploy.sh
 └── docs/
 ```
 
@@ -136,11 +148,11 @@ You need a Supabase account, Node.js 18+ (for `npx supabase`), and `curl`.
 **3. Configure the app.**
 
 ```bash
-cp web/config.example.js web/config.js          # Project URL + publishable key
+cp config.example.js config.js                  # Project URL + publishable key
 cp scripts/deploy.env.example scripts/deploy.env # project ref, DB password, hosting
 ```
 
-The key in `config.js` must be the **publishable** key (`sb_publishable_…`) or the legacy anon key, never the secret one.
+The key in `config.js` (committed — GitHub Pages serves it) must be the **publishable** key (`sb_publishable_…`) or the legacy anon key, never the secret one.
 
 **4. Deploy the database and the function.**
 
@@ -212,6 +224,7 @@ The migration was exercised against PostgreSQL 16 with stubs for Supabase's `aut
 - **Owner safety:** the last owner can't be demoted or deleted.
 - **Signed-out access:** the `anon` role has no access to anything. Guests never reach the database at all.
 - **Sprints:** members can't manage sprints unless granted, and can't borrow another person's permissions by creating a person record under their id.
+- **Boards:** members-only boards and everything on them are invisible to non-members; viewers can read but not write, including through the patch RPC.
 
 ## Troubleshooting
 

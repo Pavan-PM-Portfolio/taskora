@@ -8,7 +8,7 @@
 # What it does, in order (every step can be skipped or re-run safely):
 #   1. checks the tools you need
 #   2. asks for your Supabase project URL, publishable key and DB password
-#      and writes web/config.js + scripts/deploy.env (both git-ignored)
+#      and writes config.js (committed: publishable key only) + scripts/deploy.env (git-ignored)
 #   3. configures Supabase Auth: sign-ups off, redirect URLs
 #   4. creates the database (migrations) and deploys the admin-users function
 #   5. creates your owner account
@@ -92,9 +92,9 @@ chmod +x scripts/*.sh 2>/dev/null || true
 # -------------------------------------------------------------- 2. config ----
 step "2/7  Supabase project"
 cur_url=""; cur_key=""
-if [[ -f web/config.js ]]; then
-  cur_url="$(sed -n 's/.*supabaseUrl:[[:space:]]*"\([^"]*\)".*/\1/p' web/config.js | sed -n 1p)"
-  cur_key="$(sed -n 's/.*supabaseKey:[[:space:]]*"\([^"]*\)".*/\1/p' web/config.js | sed -n 1p)"
+if [[ -f config.js ]]; then
+  cur_url="$(sed -n 's/.*supabaseUrl:[[:space:]]*"\([^"]*\)".*/\1/p' config.js | sed -n 1p)"
+  cur_key="$(sed -n 's/.*supabaseKey:[[:space:]]*"\([^"]*\)".*/\1/p' config.js | sed -n 1p)"
 fi
 if [[ -z "$cur_url" ]]; then
   note "No project yet? Create one at https://supabase.com/dashboard → New project"
@@ -121,14 +121,14 @@ while :; do
   break
 done
 
-cat > web/config.js <<EOF
+cat > config.js <<EOF
 /* Taskora — runtime config (git-ignored). Written by scripts/setup.sh. */
 window.TASKORA_CONFIG = {
   supabaseUrl: "$SUPABASE_URL",
   supabaseKey: "$SUPABASE_KEY"
 };
 EOF
-ok "wrote web/config.js"
+ok "wrote config.js"
 
 env_set TASKORA_PROJECT_REF "$REF"
 db_pw="$(env_get SUPABASE_DB_PASSWORD)"
@@ -148,7 +148,7 @@ if [[ -z "$(git log --oneline -1 2>/dev/null || true)" ]]; then
   git -c user.name="$(git config user.name || echo Taskora)" -c user.email="$(git config user.email || echo taskora@localhost)" \
     commit -qm "Taskora: project management with backlog, sprints and reports" && ok "created the first commit"
 fi
-leak="$(git ls-files | grep -E '^web/config\.js$|deploy\.env$|\.pem$' || true)"
+leak="$(git ls-files | grep -E 'deploy\.env$|\.pem$' || true)"
 [[ -z "$leak" ]] || die "These must not be tracked by git: $leak"
 
 if [[ $LOCAL_ONLY -eq 1 ]]; then
@@ -291,12 +291,12 @@ fi
 echo
 echo "${G}${B}Taskora is set up.${N}"
 [[ -n "$SITE" ]] && echo "  Live:     $SITE"
-echo "  Locally:  python3 -m http.server 5500 --directory web   →  http://localhost:5500"
+echo "  Locally:  python3 -m http.server 5500 --directory .   →  http://localhost:5500"
 echo "  Redeploy: ./scripts/deploy.sh web      (front end)"
 echo "            ./scripts/deploy.sh all      (database + function + front end)"
 echo
 if no_default "Start the local server now?"; then
   echo "  Serving on http://localhost:5500 — Ctrl+C to stop"
   command -v open >/dev/null 2>&1 && (sleep 1; open "http://localhost:5500") &
-  python3 -m http.server 5500 --directory web
+  python3 -m http.server 5500 --directory .
 fi

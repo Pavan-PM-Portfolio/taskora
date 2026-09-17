@@ -1,15 +1,13 @@
-/* Taskora — runtime config.
- *
- * Copy this file to config.js and fill in your project's values:
- *   Supabase dashboard → Project Settings → API Keys
+/* Taskora — runtime config (config.js next to index.html and app.html).
  *
  *   supabaseUrl  https://<project-ref>.supabase.co
  *   supabaseKey  the PUBLISHABLE key (sb_publishable_…) or the legacy anon key.
- *                Never the secret / service_role key — deploy.sh refuses it.
+ *                It is public by design; the database rules protect your data.
+ *                Never put the secret / service_role key here.
  *
- * Leave both empty and the app still opens on the sign-in page: "Sign in as a guest"
- * works (a sample workspace, nothing saved), and email sign-in explains that
- * accounts aren't switched on yet.
+ * Leave both empty and the login page still works: "Sign in as a guest" opens
+ * a sample workspace (nothing saved) and email sign-in explains that accounts
+ * aren't switched on yet.
  */
 window.TASKORA_CONFIG = {
   supabaseUrl: "",

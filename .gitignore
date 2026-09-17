@@ -1,14 +1,10 @@
-# local config — every deployment has its own
-# web/config.js (demo build)
+# config.js is committed on purpose: GitHub Pages serves it, and it only holds
+# the publishable key. Never commit secret keys, passwords or dumps.
 scripts/deploy.env
-
-# never commit keys or dumps
 *.pem
 .env
 .env.*
 backups/
-
-# build + tooling
 dist/
 supabase/.temp/
 supabase/.branches/
