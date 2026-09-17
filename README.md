@@ -8,15 +8,30 @@ It is a single HTML file on a single Supabase project. There is no build step an
 
 ![Taskora sign-in](docs/sign-in.png)
 
-## Try it without a backend
+## Guest preview
 
-Open `web/index.html` in a browser, or serve the folder:
+Visitors who don't have an account click **Sign in as a guest** on the sign-in screen, or open a link ending in `?guest`. They get a sample workspace ("Acme Commerce") with:
+
+- boards and tickets
+- a live sprint
+- a backlog
+- three completed sprints for the reports
+
+Guests can click, drag and edit anything, but nothing survives the tab:
+
+- **No backend:** Supabase is never called, and the Members page refuses admin actions.
+- **No storage:** `localStorage` and `sessionStorage` are swapped for an in-memory map, so nothing is written to the browser or read from it. A guest can't see a signed-in user's cached data on a shared computer.
+- **No history:** the URL isn't updated, so nothing lands in browser history.
+- **No page cache:** the back/forward cache is disabled.
+- **No leftovers:** refresh, **Start over**, or closing the tab wipes everything.
+
+Guests never see real workspace data. The sample is generated in the browser, with dates relative to today, so the burndown always looks current.
+
+Without `config.js` the app still opens on the sign-in page. Guest sign-in works; email sign-in explains that accounts aren't switched on yet:
 
 ```bash
 cd web && python3 -m http.server 5500
 ```
-
-With no `config.js`, Taskora runs as an offline demo that keeps everything in your browser's localStorage. It's useful for a quick look, but nothing is shared between browsers.
 
 ## Scrum: backlog, sprints and reports
 
@@ -195,7 +210,7 @@ The migration was exercised against PostgreSQL 16 with stubs for Supabase's `aut
 - **Admin-only structure:** statuses, boards and settings reject member writes. Worklogs require an existing task.
 - **Deactivation:** a deactivated account can't read, write or call RPCs.
 - **Owner safety:** the last owner can't be demoted or deleted.
-- **Signed-out access:** the `anon` role has no access to anything.
+- **Signed-out access:** the `anon` role has no access to anything. Guests never reach the database at all.
 - **Sprints:** members can't manage sprints unless granted, and can't borrow another person's permissions by creating a person record under their id.
 
 ## Troubleshooting

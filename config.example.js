@@ -7,8 +7,9 @@
  *   supabaseKey  the PUBLISHABLE key (sb_publishable_…) or the legacy anon key.
  *                Never the secret / service_role key — deploy.sh refuses it.
  *
- * Leave both empty to run the offline demo, which keeps everything in this
- * browser's localStorage (handy for a public preview).
+ * Leave both empty and the app still opens on the sign-in page: "Sign in as a guest"
+ * works (a sample workspace, nothing saved), and email sign-in explains that
+ * accounts aren't switched on yet.
  */
 window.TASKORA_CONFIG = {
   supabaseUrl: "",
